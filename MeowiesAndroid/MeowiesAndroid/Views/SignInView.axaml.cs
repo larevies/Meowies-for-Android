@@ -2,9 +2,9 @@ using Avalonia.Controls;
 
 namespace MeowiesAndroid.Views;
 
-public partial class MainView : UserControl
+public partial class SignInView : UserControl
 {
-    public MainView()
+    public SignInView()
     {
         InitializeComponent();
     }

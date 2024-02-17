@@ -1,0 +1,39 @@
+<UserControl x:Class="MeowiesAndroid.Views.ProfileView"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:MeowiesAndroid.ViewModels"
+             d:DesignHeight="450"
+             d:DesignWidth="800"
+             x:CompileBindings="True"
+             x:DataType="vm:ProfileViewModel"
+             mc:Ignorable="d">
+    
+    <Grid>
+        <ContentControl Content="{Binding CurrentProfile}" Height="750"/>
+        <StackPanel Orientation="Horizontal" Spacing="5" Margin="25" VerticalAlignment="Bottom" Height="50"
+                    HorizontalAlignment="Center">
+            <Grid ColumnDefinitions="*, *" IsVisible="{Binding AreButtonsVisible}">
+                <Border Grid.Column="0" BoxShadow="0 0 25 10 #F2E8FF" HorizontalAlignment="Left" Margin="0 0 30 0" 
+                        Height="45" Width="140" CornerRadius="23">
+                    <Button Background="Transparent" Foreground="#C69AFF" HorizontalAlignment="Center" VerticalAlignment="Center"
+                            HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="18"
+                            Height="45" Width="140" CornerRadius="23"
+                            Command="{Binding NavigatePreviousCommand}"
+                            Content="{Binding Previous}" 
+                    />
+                </Border>
+                <Border Grid.Column="1" BoxShadow="0 0 25 10 #F2E8FF" HorizontalAlignment="Right" Margin="30 0 0 0" 
+                        Height="45" Width="140" CornerRadius="23" Background="#C69AFF">
+                    <Button Background="Transparent" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"
+                            HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="18"
+                            Height="45" Width="140" CornerRadius="23"
+                            Command="{Binding NavigateNextCommand}" 
+                            Content="{Binding Next}"
+                    />
+                </Border>
+            </Grid>
+        </StackPanel>
+    </Grid>
+</UserControl>

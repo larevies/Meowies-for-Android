@@ -21,3 +21,8 @@ public class MainActivity : AvaloniaMainActivity<App>
             .UseReactiveUI();
     }
 }
+
+/*    Icon="/Assets/Icons/paw.png"
+Title="Meowies"
+SystemDecorations="Full"
+WindowState="Maximized"*/
