@@ -4,10 +4,73 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="using:MeowiesAndroid.ViewModels"
+             xmlns:models="clr-namespace:MeowiesAndroid.Models"
              d:DesignHeight="1600"
              d:DesignWidth="3200"
              x:CompileBindings="True"
              x:DataType="vm:BookmarksViewModel"
              mc:Ignorable="d">
-    Bookmarks
+    
+    
+    <UserControl.Resources>
+        <DataTemplate x:Key="My.DataTemplates.MovieItemDoc" DataType="models:MovieItemDoc">
+            <Grid Height="100" Width="320" ColumnDefinitions="Auto, *, Auto" HorizontalAlignment="Center">
+                <Grid.Styles>
+                    <Style Selector="Button:pointerover /template/ ContentPresenter">
+                        <Setter Property="Background" Value="Transparent"/>
+                        <Setter Property="RenderTransform" Value="scale(1.16)"/>
+                        <Setter Property="Foreground" Value="#C69AFF"></Setter>
+                    </Style>
+                </Grid.Styles>
+                <Border Grid.Column="0" CornerRadius="5" BorderBrush="#B57CFF" BorderThickness="2">
+                    <Image Source="../Assets/Icons/cat.png" Height="100" Width="100" Stretch="UniformToFill"/>
+                </Border>
+                <StackPanel Grid.Column="1" Orientation="Vertical" VerticalAlignment="Center">
+                    <TextBlock Text="{Binding alternativeName}" Foreground="#A57CFF"
+                               FontSize="15" VerticalAlignment="Center" Margin="9 9 9 5"/>
+                    <TextBlock Text="{Binding name}" Foreground="#5822B1"
+                               FontSize="20" VerticalAlignment="Center" Margin="9 9 9 5"/>
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <TextBlock Foreground="White" Margin="9" FontSize="20">
+                            <Run Text="{Binding genres[0].name}"/>
+                            <Run Text=","/>
+                            <Run Text="{Binding genres[1].name}"/>
+                        </TextBlock>
+                        <TextBlock Text="{Binding rating.kp}" Foreground="#7D4192" 
+                                   Margin="9" FontSize="20"/>
+                        <TextBlock Foreground="White" Margin="9" FontSize="20">
+                            <Run Text="{Binding ageRating}"/>
+                            <Run Text="+"/>
+                        </TextBlock>
+                    </StackPanel>
+                </StackPanel>
+                <Button Grid.Column="2" Width="50" Height="50" Background="Transparent" 
+                        Command="{Binding $parent[ListBox].((vm:BookmarksViewModel)DataContext).Delete}" 
+                        IsVisible="{Binding IsButtonVisible}"
+                        CommandParameter="{Binding}">
+                    <Image Source="../Assets/Icons/trash.png"/>
+                </Button>
+            </Grid>
+        </DataTemplate>
+    </UserControl.Resources>
+
+    <UserControl.DataTemplates>
+        <DataTemplate DataType="models:MovieItemDoc">
+            <StackPanel Height="101" Margin="0 10 0 0 ">
+                <ContentControl Content="{Binding}" ContentTemplate="{DynamicResource My.DataTemplates.MovieItemDoc}" />
+                
+            </StackPanel>
+        </DataTemplate>
+    </UserControl.DataTemplates>
+
+    <ScrollViewer VerticalScrollBarVisibility="Hidden">
+        <Grid Height="750" RowDefinitions="100, 600">
+            <TextBlock Grid.Row="0" Text="Bookmarks!" Foreground="White" FontSize="45" Margin="0 40 0 20" 
+                       HorizontalAlignment="Center" VerticalAlignment="Top"/>
+            <ScrollViewer Grid.Row="1" Height="500">
+                <ListBox ItemsSource="{Binding Bookmarks}" Background="Transparent"
+                         SelectionMode="Single" Name="ListBox" />
+            </ScrollViewer>
+        </Grid>
+    </ScrollViewer>
 </UserControl>
