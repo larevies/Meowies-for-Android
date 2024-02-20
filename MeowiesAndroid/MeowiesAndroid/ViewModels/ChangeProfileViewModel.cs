@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using System.Windows.Input;
 using Avalonia.Media.Imaging;
 using MeowiesAndroid.Models;
@@ -13,7 +12,6 @@ public class ChangeProfileViewModel : ProfileViewModelBase
     {
         ChangeNameCommand = ReactiveCommand.Create(ChangeName);
         ChangeEmailCommand = ReactiveCommand.Create(ChangeEmail);
-        ChangePasswordCommand = ReactiveCommand.Create(ChangePassword);
         ChangedNameCommand = ReactiveCommand.Create(ChangedName);
         ChangedEmailCommand = ReactiveCommand.Create(ChangedEmail);
         ChangedPasswordCommand = ReactiveCommand.Create(ChangedPassword);
@@ -21,13 +19,14 @@ public class ChangeProfileViewModel : ProfileViewModelBase
         GoBackToProfileCommand = ReactiveCommand.Create(GoBackToProfile);
         EnterCommand = ReactiveCommand.Create(Enter);
         StartPicChangingCommand = ReactiveCommand.Create(StartPicChanging);
+        StartPasswordChangingCommand = ReactiveCommand.Create(StartPasswordChanging);
     }
 
     public string Welcome { get; set; } = "Here are three things I recommend you to do:\n" +
                                           "1. Let fate decide what to watch today\n" +
                                           "2. Read facts about your favorite actor\n" +
-                                          "3. Add something new to bookmarks\n" +
-                                          "Don't feel like it? Maybe you want to change\n" +
+                                          "3. Add something new to bookmarks\n \n" +
+                                          "Don't feel like it? Maybe you want to change " +
                                           "something in your profile?";
 
     public ICommand ChangeNameCommand { get; }
@@ -41,27 +40,51 @@ public class ChangeProfileViewModel : ProfileViewModelBase
     {
         ChangingEmail = true;
     }
-    
-    public ICommand ChangePasswordCommand { get; }
-    private void ChangePassword()
-    {
-        ChangingPassword = true;
-    }
     public string NewName { get; set; } = null!;
     public string NewEmail { get; set; } = null!;
-    public string NewPassword { get; set; } = null!;
+    private string _oldPassword = null!;
+
+    public string OldPassword
+    {
+        get => _oldPassword;
+        set
+        {
+            _oldPassword = value;
+            OnPropertyChanged(nameof(OldPassword));
+        }
+    }
+    private string _newPassword = null!;
+    public string NewPassword
+    {
+        get => _newPassword;
+        set
+        {
+            _newPassword = value;
+            OnPropertyChanged(nameof(NewPassword));
+        }
+    }
+    private string _newConfirmedPassword = null!;
+    public string NewConfirmedPassword
+    {
+        get => _newConfirmedPassword;
+        set
+        {
+            _newConfirmedPassword = value;
+            OnPropertyChanged(nameof(NewConfirmedPassword));
+        }
+    }
     
     public ICommand ChangedNameCommand { get; }
     private void ChangedName()
     {
         ChangingName = false; 
-        var context = new MeowiesContext();
+        /*var context = new MeowiesContext();
         User? queryable = context.Users
             .FirstOrDefault(x => x.Email == SignInViewModel
                 .MailAddress && x.Password == SignInViewModel.Password);
         queryable!.Name = NewName;
         context.SaveChanges();
-        CurrentUser.Name = queryable.Name;
+        CurrentUser.Name = queryable.Name;*/
     }
     
     public ICommand ChangedEmailCommand { get; }
@@ -71,13 +94,13 @@ public class ChangeProfileViewModel : ProfileViewModelBase
         try
         {
             ChangingEmail = false;
-            var context = new MeowiesContext();
+            /*var context = new MeowiesContext();
             User? queryable = context.Users
                 .FirstOrDefault(x => x.Email == SignInViewModel
                     .MailAddress && x.Password == SignInViewModel.Password);
             if (queryable!.Email == NewEmail)
             {
-                throw new Exception("This email is literally the fucking same u bullshit!!!!");
+                throw new Exception("This email is the same!");
             }
             if (_alreadyExists(NewEmail))
             {
@@ -85,7 +108,7 @@ public class ChangeProfileViewModel : ProfileViewModelBase
             }
             CurrentUser.Email = queryable.Email;
             queryable.Email = NewEmail;
-            context.SaveChanges();
+            context.SaveChanges();*/
         }
         catch (Exception e)
         {
@@ -93,25 +116,50 @@ public class ChangeProfileViewModel : ProfileViewModelBase
         }
     }
 
-    private bool _alreadyExists(string email)
+    /*private bool _alreadyExists(string email)
     {
         var context = new MeowiesContext();
         if (context.Users.FirstOrDefault(x => x.Email == email) is null) return false;
         return true;
-    }
+    }*/
 
     public ICommand ChangedPasswordCommand { get; }
     private void ChangedPassword()
     {
         ChangingPassword = false;
-        var context = new MeowiesContext();
+        /*var context = new MeowiesContext();
         User? queryable = context.Users
             .FirstOrDefault(x => x.Email == SignInViewModel
                 .MailAddress && x.Password == SignInViewModel.Password);
-        queryable!.Password = NewPassword;
+        if (OldPassword != queryable!.Password)
+        {
+            Console.WriteLine("Passwords don't match!\n" +
+                              "Old password: " + queryable.Password + "\n" +
+                              "Input password: " + OldPassword);
+            return;
+        }
+        Console.WriteLine("Passwords matched!\n" +
+                          "Old password: " + queryable.Password + "\n" +
+                          "Input password: " + OldPassword);
+
+        if (NewPassword != NewConfirmedPassword)
+        {
+            Console.WriteLine("Passwords don't match!\n" +
+                              "New password: " + NewPassword + "\n" +
+                              "New confirmed password: " + NewConfirmedPassword);
+        }
+        Console.WriteLine("Passwords matched!\n" +
+                          "New password: " + NewPassword + "\n" +
+                          "New confirmed password: " + NewConfirmedPassword);
+        
+        queryable.Password = NewPassword;
         context.SaveChanges();
         CurrentUser.Password = queryable.Password;
-        Console.WriteLine(CurrentUser.Password);
+        Console.WriteLine(CurrentUser.Password);*/
+        OldPassword = null!;
+        NewPassword = null!;
+        NewConfirmedPassword = null!;
+
     }
     private bool _changingName;
     public bool ChangingName { 
@@ -167,6 +215,15 @@ public class ChangeProfileViewModel : ProfileViewModelBase
             OnPropertyChanged(nameof(PicChanging));
         }
     }
+    private bool _passwordChanging;
+    public bool PasswordChanging { 
+        get => _passwordChanging;
+        set
+        {
+            _passwordChanging = value;
+            OnPropertyChanged(nameof(PasswordChanging));
+        }
+    }
 
     private Bitmap? _pic = ImageHelper.LoadFromResource(new Uri("avares://MeowiesAndroid/Assets/Userpics/userpic2.png"));
     public Bitmap? Pic
@@ -190,6 +247,7 @@ public class ChangeProfileViewModel : ProfileViewModelBase
     {
         ProfileChanging = true;
         PicChanging = false;
+        PasswordChanging = false;
     }
     public ICommand EnterCommand { get; }
     private void Enter()
@@ -217,24 +275,22 @@ public class ChangeProfileViewModel : ProfileViewModelBase
         PicChanging = true;
     }
 
+    public ICommand StartPasswordChangingCommand { get; }
+    private void StartPasswordChanging()
+    {
+        ProfileChanging = false;
+        PasswordChanging = true;
+    }
+
     public void SwitchPicture(int a)
     {
         Pic = ImageHelper.LoadFromResource(new Uri($"avares://MeowiesAndroid/Assets/Userpics/userpic{a}.png"));
-        using var context = new MeowiesContext();
+        /*using var context = new MeowiesContext();
         User? queryable = context.Users
             .FirstOrDefault(x => x.Email == SignInViewModel
                 .MailAddress && x.Password == SignInViewModel.Password);
         queryable!.ProfilePicture = a;
-        context.SaveChanges();
+        context.SaveChanges();*/
         GoBackToProfile();
     }
-
-
-
-    public override bool CanNavigateNext
-    {
-        get => false;
-        protected set => throw new NotSupportedException();
-    }
-    public override bool CanNavigatePrevious => false;
 }

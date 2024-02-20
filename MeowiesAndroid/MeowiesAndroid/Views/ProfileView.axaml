@@ -11,27 +11,26 @@
              mc:Ignorable="d">
     
     <Grid>
-        <ContentControl Content="{Binding CurrentProfile}" Height="750"/>
-        <StackPanel Orientation="Horizontal" Spacing="5" Margin="25" VerticalAlignment="Bottom" Height="50"
+        <ScrollViewer Width="400" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden" 
+                      Margin="0 0 0 125 ">
+            <ContentControl Content="{Binding CurrentProfile}"/>
+        </ScrollViewer>
+        <StackPanel Orientation="Horizontal" Spacing="5" Margin="0 0 0 75" VerticalAlignment="Bottom" Height="50"
                     HorizontalAlignment="Center">
             <Grid ColumnDefinitions="*, *" IsVisible="{Binding AreButtonsVisible}">
-                <Border Grid.Column="0" BoxShadow="0 0 25 10 #F2E8FF" HorizontalAlignment="Left" Margin="0 0 30 0" 
+                <Border Grid.Column="0" BorderBrush="White" BorderThickness="2" HorizontalAlignment="Left" Margin="0 0 25 0" 
                         Height="45" Width="140" CornerRadius="23">
                     <Button Background="Transparent" Foreground="#C69AFF" HorizontalAlignment="Center" VerticalAlignment="Center"
                             HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="18"
-                            Height="45" Width="140" CornerRadius="23"
-                            Command="{Binding NavigatePreviousCommand}"
-                            Content="{Binding Previous}" 
-                    />
+                            Height="45" Width="140" CornerRadius="23" Content="{Binding Previous}"
+                            Command="{Binding NavigatePreviousCommand}"/>
                 </Border>
-                <Border Grid.Column="1" BoxShadow="0 0 25 10 #F2E8FF" HorizontalAlignment="Right" Margin="30 0 0 0" 
+                <Border Grid.Column="1" BorderBrush="White" BorderThickness="2" HorizontalAlignment="Right" Margin="25 0 0 0" 
                         Height="45" Width="140" CornerRadius="23" Background="#C69AFF">
                     <Button Background="Transparent" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"
                             HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="18"
-                            Height="45" Width="140" CornerRadius="23"
-                            Command="{Binding NavigateNextCommand}" 
-                            Content="{Binding Next}"
-                    />
+                            Height="45" Width="140" CornerRadius="23" Content="{Binding Next}"
+                            Command="{Binding NavigateNextCommand}"/>
                 </Border>
             </Grid>
         </StackPanel>

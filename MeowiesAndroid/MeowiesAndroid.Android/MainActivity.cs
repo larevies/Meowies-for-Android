@@ -7,7 +7,7 @@ using Avalonia.ReactiveUI;
 namespace MeowiesAndroid.Android;
 
 [Activity(
-    Label = "MeowiesAndroid.Android",
+    Label = "Meowies",
     Theme = "@style/MyTheme.NoActionBar",
     Icon = "@drawable/icon",
     MainLauncher = true,

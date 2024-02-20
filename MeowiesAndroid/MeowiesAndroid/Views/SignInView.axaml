@@ -9,49 +9,41 @@
              x:CompileBindings="True"
              x:DataType="vm:SignInViewModel"
              mc:Ignorable="d">
-
-    <Grid  Width="450" RowDefinitions="280,80,100,100,50">
-        <StackPanel Grid.Row="0" VerticalAlignment="Bottom">
-            <TextBlock FontSize="70" Foreground="#C69AFF" HorizontalAlignment="Center"
-                       Margin=" 0 30 0 10">
-                <Run Text="Happy to see"/>
-            </TextBlock>
-            <TextBlock FontSize="65" Foreground="#C69AFF" HorizontalAlignment="Center"
-                       Margin=" 0 0 0 15">
-                <Run Text="you again!"/>
-            </TextBlock>
-        </StackPanel>
+    <Grid  Width="360" RowDefinitions="170,80,100,80,50">
+        <TextBlock Grid.Row="0" FontSize="45" Foreground="White" HorizontalAlignment="Center" TextWrapping="Wrap"
+                   Margin=" 0 40 0 20" Text="Happy to see you again!" TextAlignment="Center" Width="320"/>
         <TextBlock Grid.Row="1" FontSize="25"
                    FontWeight="SemiBold"
                    TextAlignment="Center"
                    TextWrapping="Wrap"
                    Margin="0 15">
-            <Run Text="Please," Foreground="#742BEB"></Run>
-            <Run Text="fill in the following gaps" Foreground="#C69AFF"></Run>
+            <Run Text="Please," Foreground="#742BEB"/>
+            <Run Text="fill in the following gaps" Foreground="White"/>
         </TextBlock>
-        
         <StackPanel Grid.Row="2">
-            <TextBlock HorizontalAlignment="Left" Margin="10 0 0 0" Text="E-mail" Foreground="#C69AFF" 
-                       FontSize="20"/>
+            <TextBlock HorizontalAlignment="Left" Margin="15 0 0 0" Text="E-mail" Foreground="#742BEB" 
+                       FontSize="15"/>
             <TextBox FontSize="20"
                      VerticalContentAlignment="Center"
                      Text="{Binding MailAddress}"
                      Watermark="Type here"
                      CornerRadius="20" 
-                     Foreground="#742BEB"/>
+                     Foreground="#742BEB"
+                     Background="Transparent"
+                     Width="340"
+                     />
         </StackPanel>
-        
         <StackPanel Grid.Row="3">
-            <TextBlock HorizontalAlignment="Left" Margin="10 0 0 0" Text="Password" Foreground="#C69AFF" 
-                       FontSize="20"/>
+            <TextBlock HorizontalAlignment="Left" Margin="15 0 0 0" Text="Password" Foreground="#742BEB" 
+                       FontSize="15"/>
             <TextBox FontSize="20"
                      PasswordChar="*"
                      Text="{Binding Password}"
                      Watermark="Type here"
                      CornerRadius="20"
-                     Foreground="#742BEB"/>
+                     Foreground="#742BEB"
+                     Width="340"/>
         </StackPanel>
-        
         <TextBlock Grid.Row="4" 
                    FontSize="20"
                    Text="{Binding Message}" 

@@ -11,7 +11,7 @@ public class BookmarksUpdater
         context.Attach(user);
         var newBookmark = new Bookmark()
         {
-            User = SignInViewModel.CurrentUser,
+            //User = SignInViewModel.CurrentUser,
             MovieId = movieId
         };
         context.Bookmarks.Add(newBookmark);
