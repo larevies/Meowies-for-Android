@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Text;
@@ -10,7 +9,7 @@ using Newtonsoft.Json;
 
 namespace MeowiesAndroid.Models;
 
-public class MeowiesApiRequests
+public static class MeowiesApiRequests
 {
     public static async Task PostUserToDb(User user)
     {
@@ -22,7 +21,7 @@ public class MeowiesApiRequests
 
         using var client = new HttpClient();
 
-        var responseOne = await client.PostAsync("http://192.168.0.10:8080/user",
+        var responseOne = await client.PostAsync($"{MeowiesApiUrls.ApiAddress}/user",
             new StringContent(userJson, Encoding.UTF8, "application/json"));
         if (responseOne.StatusCode != (HttpStatusCode)201)
         {
@@ -38,7 +37,7 @@ public class MeowiesApiRequests
         using var client = new HttpClient();
         try
         {
-            var responseOne = await client.PostAsync("http://192.168.0.10:8080/login",
+            var responseOne = await client.PostAsync($"{MeowiesApiUrls.ApiAddress}/login",
                 new StringContent(authJson, Encoding.UTF8, "application/json"));
             var responseString = await responseOne.Content.ReadAsStringAsync();
             var user = JsonConvert.DeserializeObject<User>(responseString);
@@ -56,7 +55,7 @@ public class MeowiesApiRequests
         using var client = new HttpClient();
         try
         {
-            var responseOne = await client.GetAsync($"http://192.168.0.10:8080/bookmark/{id}");
+            var responseOne = await client.GetAsync($"{MeowiesApiUrls.ApiAddress}/bookmark/{id}");
             var responseString = await responseOne.Content.ReadAsStringAsync();
             var bookmarks = JsonConvert.DeserializeObject<List<Bookmark>>(responseString);
             return bookmarks;
@@ -75,7 +74,7 @@ public class MeowiesApiRequests
 
         using var client = new HttpClient();
 
-        var responseOne = await client.PostAsync("http://192.168.0.10:8080/bookmark",
+        var responseOne = await client.PostAsync($"{MeowiesApiUrls.ApiAddress}/bookmark",
             new StringContent(bookmarkJson, Encoding.UTF8, "application/json"));
         if (responseOne.StatusCode != (HttpStatusCode)201)
         {
@@ -90,7 +89,7 @@ public class MeowiesApiRequests
 
         using var client = new HttpClient();
 
-        var responseOne = await client.PostAsync("http://192.168.0.10:8080/bookmark/find",
+        var responseOne = await client.PostAsync($"{MeowiesApiUrls.ApiAddress}/bookmark/find",
             new StringContent(bookmarkJson, Encoding.UTF8, "application/json"));
         var responseString = await responseOne.Content.ReadAsStringAsync();
         return responseString;
@@ -99,7 +98,7 @@ public class MeowiesApiRequests
     public static async Task RemoveFromBookmarks(int id)
     {
         using var client = new HttpClient();
-        await client.DeleteAsync($"http://192.168.0.10:8080/bookmark/{id}");
+        await client.DeleteAsync($"{MeowiesApiUrls.ApiAddress}/bookmark/{id}");
     }
 
     public static async Task ChangeProfPic(string userEmail, int picNumber)
@@ -109,7 +108,7 @@ public class MeowiesApiRequests
         
         using var client = new HttpClient();
 
-        var responseOne = await client.PostAsync("http://192.168.0.10:8080/change/pic",
+        var responseOne = await client.PostAsync($"{MeowiesApiUrls.ApiAddress}/change/pic",
             new StringContent(picJson, Encoding.UTF8, "application/json"));
         if (responseOne.StatusCode != (HttpStatusCode)202)
         {
