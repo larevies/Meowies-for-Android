@@ -1,4 +1,7 @@
 using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows.Input;
 using DynamicData;
 using MeowiesAndroid.Models;
@@ -118,31 +121,25 @@ public class ProfileViewModel : ViewModelBase
                 var task = MeowiesApiRequests.Authorize(SignInViewModel.MailAddress, SignInViewModel.Password);
                 var user = await task!;
                 ChangeProfile.CurrentUser = user!;
-                AreButtonsVisible = false;
+                SignInViewModel.CurrentUser = user!;
                 
-                // TODO find user's bookmarks on authorization
+                var intId = Convert.ToInt32(user!.Id.ToString());
+                var taskB = MeowiesApiRequests.GetBookmarksForUser(intId);
+                var bookmarks = await taskB!;
                 
-                /*SignInViewModel.CurrentUser = queryable ?? throw new InvalidOperationException();
-                var queryableTwo = context.Bookmarks
-                    .Where(o => o.User == SignInViewModel.CurrentUser)
-                    .Select(o => o.MovieId)
-                    .ToList();
-
-                List<MovieItemDoc> userBookmarks = new(queryableTwo.Count);
-
-                foreach (var movieId in queryableTwo)
+                List<MovieItemDoc> userBookmarks = new(bookmarks!.Count);
+                
+                foreach (var taskM in bookmarks.Select(bookmark => JsonDeserializers.GetBmAsync(
+                             Getters.GetMovieUrlById(
+                                 bookmark.MovieId.ToString()))))
                 {
-                    var task = JsonDeserializers.GetBmAsync(
-                        Getters.GetMovieUrlById(
-                            movieId.ToString()));
-                    var item = await task!;
-                    var doc = item!.docs[0];
+                    var movie = await taskM!;
+                    var doc = movie!.docs[0];
                     userBookmarks.Add(doc);
                 }
-
-                ChangeProfile.CurrentUser = queryable;
+                
                 BookmarksViewModel.Bookmarks = new ObservableCollection<MovieItemDoc>(userBookmarks);
-                */
+                AreButtonsVisible = false;
                 CurrentProfile = ChangeProfile;
             }
             catch (Exception e)

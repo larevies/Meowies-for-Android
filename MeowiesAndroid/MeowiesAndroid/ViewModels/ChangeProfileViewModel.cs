@@ -282,15 +282,10 @@ public class ChangeProfileViewModel : ProfileViewModelBase
         PasswordChanging = true;
     }
 
-    public void SwitchPicture(int a)
+    public async void SwitchPicture(int a)
     {
         Pic = ImageHelper.LoadFromResource(new Uri($"avares://MeowiesAndroid/Assets/Userpics/userpic{a}.png"));
-        /*using var context = new MeowiesContext();
-        User? queryable = context.Users
-            .FirstOrDefault(x => x.Email == SignInViewModel
-                .MailAddress && x.Password == SignInViewModel.Password);
-        queryable!.ProfilePicture = a;
-        context.SaveChanges();*/
+        await MeowiesApiRequests.ChangeProfPic(SignInViewModel.CurrentUser.Email, a);
         GoBackToProfile();
     }
 }
