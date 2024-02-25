@@ -11,8 +11,8 @@ public class EmailUpdater : IDbUpdatable
 {
     public void Update(ulong userId, string newEmail)
     {
-        MeowiesContext meowCtx = new MeowiesContext();
-        User user = meowCtx.Users.Single(x => x.Id == userId);
+        /*MeowiesContext meowCtx = new MeowiesContext();
+        User user = meowCtx.Users.Single(x => x.Id == userId);*/
         // TODO: check if email is correct and not the same as before
         // if (user.Email == newEmail)
         // {
@@ -22,8 +22,9 @@ public class EmailUpdater : IDbUpdatable
         // {
         //     throw new Exception("Введённая почта некорректна");
         // }
+        /*
         user.Email = newEmail;
-        meowCtx.SaveChanges();
+        meowCtx.SaveChanges();*/
     }
 }
 
@@ -31,8 +32,8 @@ public class PasswordUpdater : IDbUpdatable
 {
     public void Update(ulong userId, string newPassword)
     {
-        MeowiesContext meowCtx = new MeowiesContext();
-        User user = meowCtx.Users.Single(x => x.Id == userId);
+        /*MeowiesContext meowCtx = new MeowiesContext();
+        User user = meowCtx.Users.Single(x => x.Id == userId);*/
         // TODO: check if password is correct and not the same as before
         // if (user.Password == newPassword)
         // {
@@ -42,18 +43,19 @@ public class PasswordUpdater : IDbUpdatable
         // {
         //     throw new Exception("Введённый пароль не соответствует стандартам безопасности");
         // }
+        /*
         user.Password = newPassword;
-        meowCtx.SaveChanges();
+        meowCtx.SaveChanges();*/
     }
 }
 
 public class NameUpdater : IDbUpdatable
 {
     public void Update(ulong userId, string newName)
-    {
+    {/*
         MeowiesContext meowCtx = new MeowiesContext();
         User user = meowCtx.Users.Single(x => x.Id == userId);
         user.Name = newName;
-        meowCtx.SaveChanges();
+        meowCtx.SaveChanges();*/
     }
 }

@@ -25,7 +25,7 @@ public class BookmarksViewModel : ViewModelBase
     
     public void Delete(MovieItemDoc a)
     {
-        MeowiesContext context = new MeowiesContext();
+        /*MeowiesContext context = new MeowiesContext();
         
         var queryable = context.Bookmarks
             .FirstOrDefault(x => x.MovieId == a.id);
@@ -35,11 +35,11 @@ public class BookmarksViewModel : ViewModelBase
         
         a.IsButtonVisible = false;
         context.Bookmarks.Remove(queryable!);
-        context.SaveChanges();
+        context.SaveChanges();*/
         
         
         ObservableCollection<MovieItemDoc> newBookmarks = Bookmarks;
-        newBookmarks.Remove(itemToDelete);
+        //newBookmarks.Remove(itemToDelete);
         
         // Bookmarks.Remove(itemToDelete);
         Bookmarks = newBookmarks;

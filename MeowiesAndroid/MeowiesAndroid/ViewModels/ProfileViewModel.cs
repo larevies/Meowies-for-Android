@@ -1,6 +1,7 @@
 using System;
 using System.Windows.Input;
 using DynamicData;
+using MeowiesAndroid.Models;
 using ReactiveUI;
 
 namespace MeowiesAndroid.ViewModels;
@@ -54,7 +55,7 @@ public class ProfileViewModel : ViewModelBase
     private static readonly ProfileViewModelBase Welcome = new WelcomeViewModel();
     private static readonly ProfileViewModelBase SignUp = new SignUpViewModel();
     private static readonly ProfileViewModelBase SignIn = new SignInViewModel();
-    private static readonly ProfileViewModelBase ChangeProfile = new ChangeProfileViewModel();
+    private static readonly ChangeProfileViewModel ChangeProfile = new();
 
     private readonly ProfileViewModelBase[] _profilePages =
     {
@@ -89,20 +90,16 @@ public class ProfileViewModel : ViewModelBase
         {
             Next = "Sign in";
             Previous = "Go back";
-            /*using var context = new MeowiesContext();
-
-            var queryable = context.Users.FirstOrDefault(x => x.Email == SignUpViewModel.MailAddress);
-
-            if (queryable != null)
+            try
             {
+                await MeowiesApiRequests.PostUserToDb(SignUpViewModel.NewUser);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
                 SignUpViewModel.Message = "This email is taken";
                 CurrentProfile = SignUp;
             }
-            else
-            {
-                context.Users.Add(SignUpViewModel.NewUser);
-                await context.SaveChangesAsync();
-            }*/
         }
         else if (CurrentProfile == Welcome)
         {
@@ -116,13 +113,15 @@ public class ProfileViewModel : ViewModelBase
         }
         else if (CurrentProfile == ChangeProfile)
         {
-            /*using var context = new MeowiesContext();
-            var queryable = context.Users
-                .FirstOrDefault(x => x.Email == SignInViewModel
-                    .MailAddress && x.Password == SignInViewModel.Password);*/
             try
             {
+                var task = MeowiesApiRequests.Authorize(SignInViewModel.MailAddress, SignInViewModel.Password);
+                var user = await task!;
+                ChangeProfile.CurrentUser = user!;
                 AreButtonsVisible = false;
+                
+                // TODO find user's bookmarks on authorization
+                
                 /*SignInViewModel.CurrentUser = queryable ?? throw new InvalidOperationException();
                 var queryableTwo = context.Bookmarks
                     .Where(o => o.User == SignInViewModel.CurrentUser)
@@ -150,7 +149,7 @@ public class ProfileViewModel : ViewModelBase
             {
                 AreButtonsVisible = true;
                 Console.WriteLine(e.Message);
-                SignInViewModel.Message = "E-mail address or password do not match.\nTry again";
+                SignInViewModel.Message = "E-mail address or password do not match. Try again";
                 CurrentProfile = SignIn;
             }
         }

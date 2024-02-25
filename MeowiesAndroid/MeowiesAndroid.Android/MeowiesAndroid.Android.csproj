@@ -27,4 +27,8 @@
     <ItemGroup>
         <ProjectReference Include="..\MeowiesAndroid\MeowiesAndroid.csproj"/>
     </ItemGroup>
+
+    <ItemGroup>
+      <AvaloniaResource Include="icon.png" />
+    </ItemGroup>
 </Project>

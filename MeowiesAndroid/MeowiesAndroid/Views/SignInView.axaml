@@ -45,7 +45,10 @@
                      Width="340"/>
         </StackPanel>
         <TextBlock Grid.Row="4" 
-                   FontSize="20"
+                   FontSize="16"
+                   Width="320"
+                   TextWrapping="Wrap"
+                   TextAlignment="Center"
                    Text="{Binding Message}" 
                    Foreground="#AD1D13" 
                    HorizontalAlignment="Center"/>

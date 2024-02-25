@@ -23,7 +23,7 @@ public class User : INotifyPropertyChanged
     public int ProfilePicture { get; set; }
     public override string ToString()
     {
-        return $"Name: {Name}, Email: {Email}, Birthday: {Birthday}, Password: {Password})";
+        return $"Name: {Name}, Email: {Email}, Birthday: {Birthday}, Password: {Password}";
     }
     public event PropertyChangedEventHandler PropertyChanged;
 

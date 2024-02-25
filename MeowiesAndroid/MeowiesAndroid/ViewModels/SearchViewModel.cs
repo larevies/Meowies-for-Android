@@ -208,7 +208,7 @@ public class SearchViewModel : ViewModelBase
                     IsMovieVisible = true;
                     IsGoBackVisible = true;
                     
-                    using var context = new MeowiesContext();
+                    /*using var context = new MeowiesContext();
                     context.Attach(SignInViewModel.CurrentUser); 
                     var queryable = context.Bookmarks.First(o => o.User == SignInViewModel.CurrentUser &&
                                                                  o.MovieId == Item.id);
@@ -219,7 +219,7 @@ public class SearchViewModel : ViewModelBase
                     else
                     {
                         Bookmarked = "Bookmarked";
-                    }
+                    }*/
                     Message = "";
                 }
             }
@@ -293,7 +293,7 @@ public class SearchViewModel : ViewModelBase
     {
         try
         {
-            using var context = new MeowiesContext();
+            /*using var context = new MeowiesContext();
             context.Attach(SignInViewModel.CurrentUser);
 
             if (Bookmarked == "Bookmark me!")
@@ -317,7 +317,7 @@ public class SearchViewModel : ViewModelBase
                 context.SaveChanges();
                 BookmarksViewModel.Bookmarks.Remove(Item);
                 Bookmarked = "Bookmark me!";
-            }
+            }*/
         }
         catch(Exception e)
         {

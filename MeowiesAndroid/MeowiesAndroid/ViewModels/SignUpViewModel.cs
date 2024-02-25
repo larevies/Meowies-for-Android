@@ -23,7 +23,7 @@ public class SignUpViewModel : ProfileViewModelBase
     public static DateTime Birthday { get; set; } = DateTime.Today;
 
     private static readonly Random Rnd = new();
-    /*public static User NewUser =>
+    public static User NewUser =>
         new()
         {
             Name = Name,
@@ -31,7 +31,7 @@ public class SignUpViewModel : ProfileViewModelBase
             Password = Password,
             Email = MailAddress,
             ProfilePicture = Rnd.Next(1, 13)
-        };*/
+        };
 
     public string Consent { get; set; }  = """
                                            I (hereinafter referred to as the “Personal Data Subject”), being legally capable, freely, voluntarily, and for my own benefit, to the satisfaction of Federal Law № 152-FZ "On Personal Data" dated July 27, 2006 (hereinafter referred to as the “Law On Personal Data”), hereby provide this Consent Form for processing personal data (hereinafter referred to as the “Consent Form”) to the Autonomous non-profit organization "Directorate of the World Youth Festival”, OGRN 1237700328194, INN 9704210995, located at the address: 121099, Moscow, Novinsky Boulevard, 3/1.

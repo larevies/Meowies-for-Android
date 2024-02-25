@@ -82,4 +82,18 @@ public class JsonDeserializers
 
         throw new Exception($"HTTP request failed with status code {response.StatusCode}");
     }
+    
+    public static async Task<User?>? GetUserAsync(string json)
+    {
+        try
+        {
+            var user = JsonConvert.DeserializeObject<User>(json);
+            return user;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+    }
 }
