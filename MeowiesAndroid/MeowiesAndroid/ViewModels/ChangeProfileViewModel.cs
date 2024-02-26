@@ -1,4 +1,5 @@
 using System;
+using System.Text.RegularExpressions;
 using System.Windows.Input;
 using Avalonia.Media.Imaging;
 using MeowiesAndroid.Models;
@@ -116,10 +117,17 @@ public class ChangeProfileViewModel : ProfileViewModelBase
         }
         catch (Exception e)
         {
-            await MeowiesApiRequests.ChangeEmail(CurrentUser.Email, NewEmail);
-            CurrentUser.Email = NewEmail;
-            EmailMessage = "Success!";
-            Console.WriteLine(e.Message);
+            Regex rgx = new Regex(@"^[-\w.]+@([A-Za-z0-9][-A-Za-z0-9]+\.)+[A-Za-z]{2,4}$");
+            if (rgx.IsMatch(NewEmail)) {
+                await MeowiesApiRequests.ChangeEmail(CurrentUser.Email, NewEmail);
+                CurrentUser.Email = NewEmail;
+                EmailMessage = "Success!";
+                Console.WriteLine(e.Message);
+            }
+            else
+            {
+                EmailMessage = "Email isn't valid.";
+            }
         }
         NewEmail = null!;
     }
@@ -270,5 +278,10 @@ public class ChangeProfileViewModel : ProfileViewModelBase
         Pic = ImageHelper.LoadFromResource(new Uri($"avares://MeowiesAndroid/Assets/Userpics/userpic{a}.png"));
         await MeowiesApiRequests.ChangeProfPic(SignInViewModel.CurrentUser.Email, a);
         GoBackToProfile();
+    }
+    
+    public void StartSwitchPicture(int a)
+    {
+        Pic = ImageHelper.LoadFromResource(new Uri($"avares://MeowiesAndroid/Assets/Userpics/userpic{a}.png"));
     }
 }

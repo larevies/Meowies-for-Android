@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Data;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Windows.Input;
 using DynamicData;
 using MeowiesAndroid.Models;
@@ -95,12 +97,17 @@ public class ProfileViewModel : ViewModelBase
             Previous = "Go back";
             try
             {
+                Regex rgx = new Regex(@"^[-\w.]+@([A-Za-z0-9][-A-Za-z0-9]+\.)+[A-Za-z]{2,4}$");
+                if (!rgx.IsMatch(SignUpViewModel.NewUser.Email))
+                {
+                    throw new InvalidExpressionException("Invalid email address");
+                }
                 await MeowiesApiRequests.PostUserToDb(SignUpViewModel.NewUser);
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
-                SignUpViewModel.Message = "This email is taken";
+                SignUpViewModel.Message = "This email is taken or isn't valid.";
                 CurrentProfile = SignUp;
             }
         }
@@ -122,7 +129,7 @@ public class ProfileViewModel : ViewModelBase
                 var user = await task!;
                 ChangeProfile.CurrentUser = user!;
                 SignInViewModel.CurrentUser = user!;
-                ChangeProfile.SwitchPicture(user!.ProfilePicture);
+                ChangeProfile.StartSwitchPicture(user!.ProfilePicture);
                 
                 var intId = Convert.ToInt32(user.Id.ToString());
                 var taskB = MeowiesApiRequests.GetBookmarksForUser(intId);
