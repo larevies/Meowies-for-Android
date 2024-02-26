@@ -38,6 +38,17 @@ public class ChangeProfileViewModel : ProfileViewModelBase
             OnPropertyChanged(nameof(Message));
         }
     }
+    
+    private string _emailMessage = "";
+    public string EmailMessage
+    {
+        get => _emailMessage;
+        set
+        {
+            _emailMessage = value;
+            OnPropertyChanged(nameof(EmailMessage));
+        }
+    }
 
     public ICommand ChangeNameCommand { get; }
     private void ChangeName()
@@ -88,15 +99,9 @@ public class ChangeProfileViewModel : ProfileViewModelBase
     {
         ChangingName = false;
         await MeowiesApiRequests.ChangeName(CurrentUser.Email, NewName);
-
-
-        /*var context = new MeowiesContext();
-        User? queryable = context.Users
-            .FirstOrDefault(x => x.Email == SignInViewModel
-                .MailAddress && x.Password == SignInViewModel.Password);
-        queryable!.Name = NewName;
-        context.SaveChanges();
-        CurrentUser.Name = queryable.Name;*/
+        CurrentUser.Name = NewName;
+        EmailMessage = "Success!";
+        NewName = null!;
     }
     
     public ICommand ChangedEmailCommand { get; }
@@ -106,36 +111,18 @@ public class ChangeProfileViewModel : ProfileViewModelBase
         try
         {
             ChangingEmail = false;
-            await MeowiesApiRequests.ChangeEmail(CurrentUser.Email, NewName);
-            
-            /*var context = new MeowiesContext();
-            User? queryable = context.Users
-                .FirstOrDefault(x => x.Email == SignInViewModel
-                    .MailAddress && x.Password == SignInViewModel.Password);
-            if (queryable!.Email == NewEmail)
-            {
-                throw new Exception("This email is the same!");
-            }
-            if (_alreadyExists(NewEmail))
-            {
-                throw new Exception("This email already exists!!!");
-            }
-            CurrentUser.Email = queryable.Email;
-            queryable.Email = NewEmail;
-            context.SaveChanges();*/
+            await MeowiesApiRequests.GetUserFromDb(NewEmail)!;
+            EmailMessage = "This email is taken!";
         }
         catch (Exception e)
         {
+            await MeowiesApiRequests.ChangeEmail(CurrentUser.Email, NewEmail);
+            CurrentUser.Email = NewEmail;
+            EmailMessage = "Success!";
             Console.WriteLine(e.Message);
         }
+        NewEmail = null!;
     }
-
-    /*private bool _alreadyExists(string email)
-    {
-        var context = new MeowiesContext();
-        if (context.Users.FirstOrDefault(x => x.Email == email) is null) return false;
-        return true;
-    }*/
 
     public ICommand ChangedPasswordCommand { get; }
     private async void ChangedPassword()
@@ -151,37 +138,6 @@ public class ChangeProfileViewModel : ProfileViewModelBase
         {
             Message = "Passwords do not match";
         }
-
-
-        /*var context = new MeowiesContext();
-        User? queryable = context.Users
-            .FirstOrDefault(x => x.Email == SignInViewModel
-                .MailAddress && x.Password == SignInViewModel.Password);
-        if (OldPassword != queryable!.Password)
-        {
-            Console.WriteLine("Passwords don't match!\n" +
-                              "Old password: " + queryable.Password + "\n" +
-                              "Input password: " + OldPassword);
-            return;
-        }
-        Console.WriteLine("Passwords matched!\n" +
-                          "Old password: " + queryable.Password + "\n" +
-                          "Input password: " + OldPassword);
-
-        if (NewPassword != NewConfirmedPassword)
-        {
-            Console.WriteLine("Passwords don't match!\n" +
-                              "New password: " + NewPassword + "\n" +
-                              "New confirmed password: " + NewConfirmedPassword);
-        }
-        Console.WriteLine("Passwords matched!\n" +
-                          "New password: " + NewPassword + "\n" +
-                          "New confirmed password: " + NewConfirmedPassword);
-
-        queryable.Password = NewPassword;
-        context.SaveChanges();
-        CurrentUser.Password = queryable.Password;
-        Console.WriteLine(CurrentUser.Password);*/
         
         OldPassword = null!;
         NewPassword = null!;

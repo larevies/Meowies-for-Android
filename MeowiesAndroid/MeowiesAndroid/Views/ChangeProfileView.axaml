@@ -67,8 +67,8 @@
                              HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Watermark="New name"
                              CornerRadius="25" Background="Transparent" Text="{Binding NewName}"
                              BorderBrush="Transparent"/>
-                    <Button Foreground="#742BEB" HorizontalAlignment="Center" FontSize="18" Height="45"
-                            HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                    <Button Foreground="#742BEB" HorizontalAlignment="Center" FontSize="15" Height="45"
+                            HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Content="Apply"
                             CornerRadius="25" Background="Transparent" Command="{Binding ChangedNameCommand}"/>
                 </StackPanel>
             </Border>
@@ -86,7 +86,7 @@
                              HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Watermark="New email"
                              CornerRadius="25" Background="Transparent" Text="{Binding NewEmail}"
                              BorderBrush="Transparent"/>
-                    <Button Foreground="#742BEB" HorizontalAlignment="Center" FontSize="18" Height="45" Margin="5"
+                    <Button Foreground="#742BEB" HorizontalAlignment="Center" FontSize="15" Height="45" Margin="0 -5 0 0"
                             HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Content="Apply"
                             CornerRadius="25" Background="Transparent" Command="{Binding ChangedEmailCommand}"/>
                 </StackPanel>
@@ -115,7 +115,8 @@
                         Text="Can't change birthday">
                 </TextBlock>
             </Border>
-            
+            <TextBlock Grid.Row="6" Margin="0 70 0 0" Text="{Binding EmailMessage}"
+                       Foreground="DarkBlue" TextAlignment="Center"/>
             <Image Grid.Row="7" Source="../Assets/Icons/playing cat.png" Width="100" Height="100" HorizontalAlignment="Left"
                    VerticalAlignment="Bottom" Margin="40 0"/>
         </Grid>
@@ -163,7 +164,7 @@
                              BorderBrush="Transparent" />
                 </Border>
                 <TextBlock Text="{Binding Message}" Background="Transparent" TextAlignment="Center" 
-                           HorizontalAlignment="Center" Margin="0 -20 0 0" Foreground="AliceBlue"/>
+                           HorizontalAlignment="Center" Margin="0 -20 0 0" Foreground="DarkBlue"/>
             </StackPanel>
             <Button Grid.Row="4" Foreground="#742BEB" HorizontalAlignment="Center" FontSize="18" Height="45" 
                     Margin="0 40 0 0" VerticalAlignment="Top"

@@ -146,7 +146,7 @@ public static class MeowiesApiRequests
     public static async Task ChangeEmail(string userEmail, string newEmail)
     {
         var passwordJson = $"{{\"Email\": \"{userEmail}\"," +
-                           $"\"Password\": \"{newEmail}\"}}";
+                           $"\"NewEmail\": \"{newEmail}\"}}";
         
         using var client = new HttpClient();
 
@@ -155,6 +155,22 @@ public static class MeowiesApiRequests
         if (responseOne.StatusCode != (HttpStatusCode)202)
         {
             throw new ConstraintException($"Some mistake occurred.");
+        }
+    }
+    public static async Task GetUserFromDb(string email)
+    {
+        using var client = new HttpClient();
+
+        try
+        {
+            var responseOne = await client.GetAsync($"{MeowiesApiUrls.ApiAddress}/user/{email}");
+            var responseString = await responseOne.Content.ReadAsStringAsync();
+            var user = JsonConvert.DeserializeObject<User>(responseString);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.Message);
+            throw;
         }
     }
 }
