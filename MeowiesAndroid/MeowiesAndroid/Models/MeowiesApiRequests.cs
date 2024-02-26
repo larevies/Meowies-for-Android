@@ -115,4 +115,46 @@ public static class MeowiesApiRequests
             throw new ConstraintException($"Some mistake occurred.");
         }
     }
+    public static async Task ChangeName(string userEmail, string newName)
+    {
+        var nameJson = $"{{\"Email\": \"{userEmail}\"," +
+                      $"\"Name\": \"{newName}\"}}";
+        
+        using var client = new HttpClient();
+
+        var responseOne = await client.PostAsync($"{MeowiesApiUrls.ApiAddress}/change/name",
+            new StringContent(nameJson, Encoding.UTF8, "application/json"));
+        if (responseOne.StatusCode != (HttpStatusCode)202)
+        {
+            throw new ConstraintException($"Some mistake occurred.");
+        }
+    }
+    public static async Task ChangePassword(string userEmail, string newPassword)
+    {
+        var passwordJson = $"{{\"Email\": \"{userEmail}\"," +
+                       $"\"Password\": \"{newPassword}\"}}";
+        
+        using var client = new HttpClient();
+
+        var responseOne = await client.PostAsync($"{MeowiesApiUrls.ApiAddress}/change/password",
+            new StringContent(passwordJson, Encoding.UTF8, "application/json"));
+        if (responseOne.StatusCode != (HttpStatusCode)202)
+        {
+            throw new ConstraintException($"Some mistake occurred.");
+        }
+    }
+    public static async Task ChangeEmail(string userEmail, string newEmail)
+    {
+        var passwordJson = $"{{\"Email\": \"{userEmail}\"," +
+                           $"\"Password\": \"{newEmail}\"}}";
+        
+        using var client = new HttpClient();
+
+        var responseOne = await client.PostAsync($"{MeowiesApiUrls.ApiAddress}/change/email",
+            new StringContent(passwordJson, Encoding.UTF8, "application/json"));
+        if (responseOne.StatusCode != (HttpStatusCode)202)
+        {
+            throw new ConstraintException($"Some mistake occurred.");
+        }
+    }
 }

@@ -28,13 +28,22 @@ public class ChangeProfileViewModel : ProfileViewModelBase
                                           "3. Add something new to bookmarks\n \n" +
                                           "Don't feel like it? Maybe you want to change " +
                                           "something in your profile?";
+    private string _message = "";
+    public string Message
+    {
+        get => _message;
+        set
+        {
+            _message = value;
+            OnPropertyChanged(nameof(Message));
+        }
+    }
 
     public ICommand ChangeNameCommand { get; }
     private void ChangeName()
     {
         ChangingName = true;
     }
-    
     public ICommand ChangeEmailCommand { get; }
     private void ChangeEmail()
     {
@@ -75,9 +84,12 @@ public class ChangeProfileViewModel : ProfileViewModelBase
     }
     
     public ICommand ChangedNameCommand { get; }
-    private void ChangedName()
+    private async void ChangedName()
     {
-        ChangingName = false; 
+        ChangingName = false;
+        await MeowiesApiRequests.ChangeName(CurrentUser.Email, NewName);
+
+
         /*var context = new MeowiesContext();
         User? queryable = context.Users
             .FirstOrDefault(x => x.Email == SignInViewModel
@@ -89,11 +101,13 @@ public class ChangeProfileViewModel : ProfileViewModelBase
     
     public ICommand ChangedEmailCommand { get; }
 
-    private void ChangedEmail()
+    private async void ChangedEmail()
     {
         try
         {
             ChangingEmail = false;
+            await MeowiesApiRequests.ChangeEmail(CurrentUser.Email, NewName);
+            
             /*var context = new MeowiesContext();
             User? queryable = context.Users
                 .FirstOrDefault(x => x.Email == SignInViewModel
@@ -124,9 +138,21 @@ public class ChangeProfileViewModel : ProfileViewModelBase
     }*/
 
     public ICommand ChangedPasswordCommand { get; }
-    private void ChangedPassword()
+    private async void ChangedPassword()
     {
         ChangingPassword = false;
+        if (CurrentUser.Password == OldPassword && NewPassword == NewConfirmedPassword)
+        {
+            Message = "Success!";
+            await MeowiesApiRequests.ChangePassword(CurrentUser.Email, NewPassword);
+            CurrentUser.Password = NewPassword;
+        }
+        else
+        {
+            Message = "Passwords do not match";
+        }
+
+
         /*var context = new MeowiesContext();
         User? queryable = context.Users
             .FirstOrDefault(x => x.Email == SignInViewModel
@@ -151,11 +177,12 @@ public class ChangeProfileViewModel : ProfileViewModelBase
         Console.WriteLine("Passwords matched!\n" +
                           "New password: " + NewPassword + "\n" +
                           "New confirmed password: " + NewConfirmedPassword);
-        
+
         queryable.Password = NewPassword;
         context.SaveChanges();
         CurrentUser.Password = queryable.Password;
         Console.WriteLine(CurrentUser.Password);*/
+        
         OldPassword = null!;
         NewPassword = null!;
         NewConfirmedPassword = null!;
