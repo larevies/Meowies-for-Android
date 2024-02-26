@@ -122,8 +122,9 @@ public class ProfileViewModel : ViewModelBase
                 var user = await task!;
                 ChangeProfile.CurrentUser = user!;
                 SignInViewModel.CurrentUser = user!;
+                ChangeProfile.SwitchPicture(user!.ProfilePicture);
                 
-                var intId = Convert.ToInt32(user!.Id.ToString());
+                var intId = Convert.ToInt32(user.Id.ToString());
                 var taskB = MeowiesApiRequests.GetBookmarksForUser(intId);
                 var bookmarks = await taskB!;
                 
