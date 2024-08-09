@@ -1,12 +1,4 @@
-﻿using System;
-using System.ComponentModel;
-using System.Net.Http;
-using System.Threading.Tasks;
-using System.Web;
-using System.Windows.Input;
-using MeowiesAndroid.Commands;
-using MeowiesAndroid.Models;
-using Newtonsoft.Json;
+﻿using System.Windows.Input;
 using ReactiveUI;
 
 namespace MeowiesAndroid.ViewModels;
@@ -28,7 +20,7 @@ public class MainViewModel : ViewModelBase
         new SearchViewModel(),
         new BookmarksViewModel()
     };
-    private ViewModelBase _currentPage;
+    private ViewModelBase _currentPage = null!;
     public ViewModelBase CurrentPage
     {
         get => _currentPage;

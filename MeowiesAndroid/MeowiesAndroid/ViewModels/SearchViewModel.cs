@@ -291,47 +291,6 @@ public class SearchViewModel : ViewModelBase
             OnPropertyChanged(nameof(Bookmarked));
         }
     }
-
-    public ICommand AddToBookmarksCommand { get; }
-    private async void AddToBookmarks()
-    {
-        try
-        {
-            if (Bookmarked == "Bookmark me!")
-            {
-                int intId = Convert.ToInt32(SignInViewModel.CurrentUser.Id.ToString());
-                var newBookmark = new Bookmark()
-                {
-                    UserId = intId,
-                    MovieId = Item.id
-                };
-                await MeowiesApiRequests.PostBookmarkToDb(newBookmark);
-                BookmarksViewModel.Bookmarks.Add(Item);
-                Message = "";
-                Bookmarked = "Bookmarked";
-            } 
-            else if (Bookmarked == "Bookmarked")
-            {
-                Message = "Removed";
-                int intId = Convert.ToInt32(SignInViewModel.CurrentUser.Id.ToString());
-                var newBookmark = new Bookmark()
-                {
-                    UserId = intId,
-                    MovieId = Item.id
-                };
-                var idString = await MeowiesApiRequests.FindBookmark(newBookmark);
-                var id = Convert.ToInt32(idString);
-                await MeowiesApiRequests.RemoveFromBookmarks(id);
-                BookmarksViewModel.Bookmarks.Remove(Item);
-                Bookmarked = "Bookmark me!";
-            }
-        }
-        catch(Exception e)
-        {
-            Console.WriteLine(e.Message);
-            Message = "you are not logged in.\nlog in to save movies!";
-        }
-    }
     
     public ICommand RandomMovieCommand { get; }
     private async void RandomMovie()
@@ -365,7 +324,7 @@ public class SearchViewModel : ViewModelBase
                 }
                 else
                 {
-                    Item = item.docs[0];
+                    //Item = item.docs[0];
                     Item = item.docs[0];
                     DownloadImage(Item.poster.url);
                     IsSearchVisible = false;
@@ -417,7 +376,6 @@ public class SearchViewModel : ViewModelBase
                         (Getters.GetMovieUrlById(id.ToString()));
                     var item = await task!;
                     Item = item!.docs[0];
-                    Item = item.docs[0];
                     DownloadImage(Item.poster.url);
                     IsSearchVisible = false;
                     IsStartVisible = false;
@@ -429,10 +387,8 @@ public class SearchViewModel : ViewModelBase
             }
             
             /****
-             * next code CAUSES problems KILLS our api tokens
-             */
-            
-            /*var task = JSONDeserializers.GetRndAsync(ApiQueries.RandomUrl);
+            next code CAUSES problems KILLS our api tokens
+            var task = JSONDeserializers.GetRndAsync(ApiQueries.RandomUrl);
             var item = await task!;
             MovieItemDoc a = new()
             {
@@ -461,6 +417,46 @@ public class SearchViewModel : ViewModelBase
             Console.WriteLine(e.Message);
         }
         IsMovieVisible = true;
+    }
+    public ICommand AddToBookmarksCommand { get; }
+    private async void AddToBookmarks()
+    {
+        try
+        {
+            if (Bookmarked == "Bookmark me!")
+            {
+                int intId = Convert.ToInt32(SignInViewModel.CurrentUser.Id.ToString());
+                var newBookmark = new Bookmark()
+                {
+                    UserId = intId,
+                    MovieId = Item.id
+                };
+                await MeowiesApiRequests.PostBookmarkToDb(newBookmark);
+                BookmarksViewModel.Bookmarks!.Add(Item);
+                Message = "";
+                Bookmarked = "Bookmarked";
+            } 
+            else if (Bookmarked == "Bookmarked")
+            {
+                Message = "Removed";
+                int intId = Convert.ToInt32(SignInViewModel.CurrentUser.Id.ToString());
+                var newBookmark = new Bookmark()
+                {
+                    UserId = intId,
+                    MovieId = Item.id
+                };
+                var idString = await MeowiesApiRequests.FindBookmark(newBookmark);
+                var id = Convert.ToInt32(idString);
+                await MeowiesApiRequests.RemoveFromBookmarks(id);
+                BookmarksViewModel.Bookmarks!.Remove(Item);
+                Bookmarked = "Bookmark me!";
+            }
+        }
+        catch(Exception e)
+        {
+            Console.WriteLine(e.Message);
+            Message = "you are not logged in.\nlog in to save movies!";
+        }
     }
     
     private string _message = "";

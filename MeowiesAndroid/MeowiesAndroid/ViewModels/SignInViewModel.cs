@@ -1,7 +1,5 @@
 using System.ComponentModel.DataAnnotations;
 using MeowiesAndroid.Models;
-using ReactiveUI;
-
 
 namespace MeowiesAndroid.ViewModels;
 

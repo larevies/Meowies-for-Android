@@ -1,17 +1,14 @@
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Windows.Input;
 using MeowiesAndroid.Models;
-using ReactiveUI;
 
 namespace MeowiesAndroid.ViewModels;
 
 
 public class BookmarksViewModel : ViewModelBase
 {
-    public static ObservableCollection<MovieItemDoc> Bookmarks { get; set; }
+    public static ObservableCollection<MovieItemDoc>? Bookmarks { get; set; }
 
     private string _refresh = "";
     public string Refresh
@@ -36,12 +33,12 @@ public class BookmarksViewModel : ViewModelBase
         var id = Convert.ToInt32(idString);
         await MeowiesApiRequests.RemoveFromBookmarks(id);
         
-        var itemToDelete = Bookmarks.Single
+        var itemToDelete = Bookmarks!.Single
             (x => x.id == a.id);
         a.IsButtonVisible = false;
         
-        ObservableCollection<MovieItemDoc> newBookmarks = Bookmarks;
-        newBookmarks.Remove(itemToDelete);
+        ObservableCollection<MovieItemDoc>? newBookmarks = Bookmarks;
+        newBookmarks!.Remove(itemToDelete);
         
         Bookmarks = newBookmarks;
         
